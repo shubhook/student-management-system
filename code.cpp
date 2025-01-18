@@ -4,39 +4,41 @@
 using namespace std;
  
 struct info{
-        string name;
-        int roll_no;
-        float cpi;
-        string branch;
+    string name;
+    int roll_no;
+    float cpi;
+    string branch;
 };
 
-void diaplay(struct info* newStudent){
-    cout << "Student Name: " << newStudent->name << '\n';
-    cout << "Student Roll No: " << newStudent->roll_no << '\n';
-    cout << "Student Branch: " << newStudent->branch << '\n';
-    cout << "Student CPI: " << newStudent->cpi << '\n';
-}
+struct node{
+    info data;
+    struct node* next;
+};
+struct node* head = nullptr;
+struct node* current = nullptr;
+
+
+
 void user_interface();
+void add_student();
+void remove_student();
+void all_student_info();
+void find_student_info();
 
 int main(){
-
-    struct info* newStudent = ( struct info* )malloc(sizeof(struct info));
-
     user_interface();
     return 0;
-
 }
 
 // user_interface
 void user_interface(){
-
     int choice;
     do{
         //user_options
         cout << '\n' << "1 - ADD STUDENT: " << endl;
         cout << "2 - REMOVE STUDENT: " << endl;
-        cout << "3 - STUDENT INFO: " << endl;
-        cout << "4 - UPDATE STUDENT INFO: " << endl;
+        cout << "3 - All STUDENT INFO: " << endl;
+        cout << "4 - FIND STUDENT INFO: " << endl;
         cout << "5 - EXIT: " << endl;
 
         //user_choice's
@@ -55,16 +57,16 @@ void user_interface(){
                 add_student();
                 break;
             
-            case 2: 
-                remove_student();
+            case 2:
+                //remove_student();
                 break;
 
             case 3: 
-                student_info();
+                all_student_info();
                 break;
 
             case 4: 
-                update_student_info();
+                find_student_info();
                 break;
 
             case 5:
@@ -78,3 +80,68 @@ void user_interface(){
     }while(choice != 5);
     return;
 }
+
+void add_student(){
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+
+    cout << "ENTER NAME:";
+    cin.ignore();// clears the input buffer
+    getline(cin,newNode->data.name);
+
+    cout << "ENTER ROLL NO: ";
+    cin  >> newNode->data.roll_no ;
+
+    cout << "ENTER CPI: ";
+    cin  >> newNode->data.cpi;
+
+    cout << "ENTER BRANCH: ";
+    cin  >> newNode->data.branch;
+    newNode->next = head;
+    head = newNode;
+
+    return;
+}
+
+void all_student_info(){
+    current = head;
+    while(current != nullptr){
+        cout << '\n';
+        cout << "Name: " << current->data.name << endl;
+        cout << "Roll: " << current->data.roll_no << endl;
+        cout << "CPI: " << current->data.cpi << endl;
+        cout << "Branch: " << current->data.branch << endl;
+        cout << '\n';
+        current = current->next;
+    }
+    return;
+}
+
+void find_student_info(){
+    string name;
+    bool found = false;
+
+    cout << "ENTER NAME: ";
+    cin.ignore(); // to clear the input buffer
+    getline(cin, name);
+    current = head;
+
+    while(current != nullptr){
+        if(current->data.name == name){
+            cout << '\n';
+            cout << "Name: " << current->data.name << endl;
+            cout << "Roll: " << current->data.roll_no << endl;
+            cout << "CPI: " << current->data.cpi << endl;
+            cout << "Branch: " << current->data.branch << endl;
+            cout << '\n';
+            found = true;
+            break;
+        }
+        current = current->next;
+    }
+
+    if (!found) {
+        cout << "Student not found!" << endl;
+    }
+    return;
+}
+
