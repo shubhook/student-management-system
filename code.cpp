@@ -34,6 +34,8 @@ int main(){
 void user_interface(){
     int choice;
     do{
+        
+        cout << '\n' << "----- STUDENT INFO MANAGEMENT -----" << '\n' ;
         //user_options
         cout << '\n' << "1 - ADD STUDENT: " << endl;
         cout << "2 - REMOVE STUDENT: " << endl;
@@ -58,7 +60,7 @@ void user_interface(){
                 break;
             
             case 2:
-                //remove_student();
+                remove_student();
                 break;
 
             case 3: 
@@ -78,6 +80,8 @@ void user_interface(){
                 break;
         }
     }while(choice != 5);
+
+    cout << '\n' << "-----------------------------------" << '\n' ;
     return;
 }
 
@@ -99,12 +103,17 @@ void add_student(){
     newNode->next = head;
     head = newNode;
 
+    cout << '\n' << "STUDENT ADDED!" << '\n' ;
+
     return;
 }
 
 void all_student_info(){
     current = head;
-    while(current != nullptr){
+    if(head == nullptr){
+        cout << "THE LIST IS EMPTY!" << '\n' ;
+    }else{
+        while(current != nullptr){
         cout << '\n';
         cout << "Name: " << current->data.name << endl;
         cout << "Roll: " << current->data.roll_no << endl;
@@ -112,7 +121,9 @@ void all_student_info(){
         cout << "Branch: " << current->data.branch << endl;
         cout << '\n';
         current = current->next;
+        }
     }
+    
     return;
 }
 
@@ -144,4 +155,42 @@ void find_student_info(){
     }
     return;
 }
+
+void remove_student() {
+    string name;
+    struct node* prev = nullptr;
+    struct node* current = head;
+    bool found = false;
+
+    cout << "ENTER THE NAME: ";
+    cin.ignore();  
+    getline(cin, name);
+
+    while (current != nullptr) {
+
+        if (current->data.name == name) {
+
+            if (prev == nullptr) {
+                head = current->next;  
+            } else {
+                prev->next = current->next;  
+            }
+            delete current;  
+            found = true;
+            break;  
+        }
+        prev = current;      
+        current = current->next;  
+    }
+
+    if (!found) {
+        cout << "Student not found!" << endl;
+        return;
+    }
+
+    cout << '\n' << "STUDENT REMOVED!" << '\n' ;
+
+    return;
+}
+
 
